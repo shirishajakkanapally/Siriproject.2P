@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5; 
+    }
+    .logo {
+      width: 100px; 
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    form {
+      margin-bottom: 10px; 
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 70%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #28a745; /* Green color */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    /* Different color for the "Complete" button */
+    button.complete {
+      background-color: #007bff; /* Blue color */
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .todo-content {
+      flex-grow: 1;
+    }
+    .buttons {
+      display: flex;
+      align-items: center;
+    }
+    .buttons form {
+      margin-left: 10px; 
+    }
+    .highlight {
+      text-align: center;
+      color: #007bff;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <% if (typeof user != 'undefined') { %>
+      <p>Welcome <%= user.name %>, Thank you for choosing my website!</p>
+      <form action="/todos" method="POST">
+        <input type="text" name="text" placeholder="Enter a new todo">
+        <button type="submit">Add Todo</button>
+      </form>
+      <ul>
+        <% todos.forEach(todo => { %>
+          <li class="todo-item">
+            <div class="todo-content">
+              <% if (!todo.completed) { %>
+                <form action="/todos/<%= todo._id %>/complete" method="POST">
+                  <button type="submit" class="complete">Complete</button>
+                </form>
+              <% } %>
+              <span><%= todo.text %></span>
+            </div>
+            <div class="buttons">
+              <form action="/todos/<%= todo._id %>/update" method="POST">
+                <input type="text" name="updatedText" placeholder="Update todo">
+                <button type="submit">Update</button>
+              </form>
+              <form action="/todos/<%= todo._id %>/delete" method="POST">
+                <button type="submit" style="background-color: #dc3545;">Delete</button> <!-- Red color for delete button -->
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+      <a href="/users/logout">Logout</a>
+    <% } else { %>
+      <p>Please log in to access the dashboard.</p>
+    <% } %>
+    <p class="highlight">Actually, I'm working on this website. Stay tuned for updates!</p>
+  </div>
+</body>
+</html>
